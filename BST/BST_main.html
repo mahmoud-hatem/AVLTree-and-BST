@@ -1,0 +1,475 @@
+<html>
+	<head>
+		<title>FCIS BST</title>
+		<script src="origin co-ordenates.js"></script>
+		<script src="BST_controller.js"></script>
+		<style>
+			#myCanvas {
+				border: 1px solid rgb(0,0,0);
+			}
+			h1 {
+				color: red
+			}
+			.bg0 {
+				background-image: url("Background/White.jpg");
+			}
+			.bg1 {
+				background-image: url("Background/Abstract.jpg");
+			}
+			.bg2 {
+				background-image: url("Background/Black baroque pattern.jpg");
+			}
+			.bg3 {
+				background-image: url("Background/Black.jpg");
+			}
+			.bg4 {
+				background-image: url("Background/Dark fabric.jpg");
+			}
+			.bg5 {
+				background-image: url("Background/Desert.jpg");
+			}
+			.bg6 {
+				background-image: url("Background/Finding Nemo.jpg");
+			}
+			.bg7 {
+				background-image: url("Background/Gray floor texture.jpg");
+			}
+			.bg8 {
+				background-image: url("Background/Light purple.jpg");
+			}
+			.bg9 {
+				background-image: url("Background/Moonrise.jpg");
+			}
+			.bg10 {
+				background-image: url("Background/Parallel lines.jpg");
+			}
+			.bg11 {
+				background-image: url("Background/Scarlet texture.jpg");
+			}
+			.bg12 {
+				background-image: url("Background/Sea.jpg");
+			}
+			.bg13 {
+				background-image: url("Background/Sunflowers.jpg");
+			}
+			.bg14 {
+				background-image: url("Background/Superman Man Of Steel.jpg");
+			}
+			.bg15 {
+				background-image: url("Background/Tau.jpg");
+			}
+		</style>
+		<body id="Body">
+	</head>
+	<body background="Background/Desert.jpg">
+		<center>
+			<h1>BST</h1>
+			<b><i><font size="4" color="#FF0000">Output</font></i></b>
+			<textarea id = "Textarea1" disabled="disabled"rows="1" cols="120"></textarea>
+			<audio controls autoplay loop>
+				<source src="saw.ogg" type="audio/ogg">
+				<source src="saw.mp3" type="audio/mp3">
+				Your browser does not support the audio element.
+			</audio>
+			<div>
+				<b><i><font size="4" color="#FF0000">Theme</font></i></b>
+				<select id="bg" name="Background">
+					<option value="0">White</option>
+					<option value="1">Abstract</option>
+					<option value="2">Black baroque pattern</option>
+					<option value="3">Black</option>
+					<option value="4">Dark fabric</option>
+					<option value="5">Desert</option>
+					<option value="6">Finding Nemo</option>
+					<option value="7">Gray floor texture</option>
+					<option value="8">Light purple</option>
+					<option value="9">Moonrise</option>
+					<option value="10">Parallel lines</option>
+					<option value="11">Scarlet texture</option>
+					<option value="12">Sea</option>
+					<option value="13">Sunflowers</option>
+					<option value="14">Superman Man Of Steel</option>
+					<option value="15">Tau</option>
+				</select>
+				<button id="bg1" onclick="BG()">
+					Background
+				</button>
+				<select id="f" name="Background">
+					<option value="0">25 px Arial</option>
+					<option value="1">30 px Arial</option>
+					<option value="2">35 px Arial</option>
+				</select>
+				<button id="f1" onclick="font_size()">
+					Font size
+				</button>
+				<input id="c" type="color" name="Font color">
+				<button id="f2" onclick="font_color()">
+					Font color
+				</button>
+				<button id="color1" onclick="color_ch()">
+					Circle color
+				</button>
+				<br>
+				<label><b><i><font size="4" color="#FF0000">Value</font></i></b></label>
+				<input name="Value" id="value" type="number" min="-9999" max="99999">
+
+				<button id="b1" onclick="GetInput()">
+					Insert
+				</button>
+				<button id="b2" onclick="search()">
+					Search
+				</button>
+				<button id="b3" onclick="Delete()">
+					Delete
+				</button>
+				<button id="b4" onclick="PREORDERTRAVERSAL()">
+					PreOrder Traversal
+				</button>
+				<button id="b5" onclick="INORDERTRAVERSAL()">
+					InOrder Traversal
+				</button>
+				<button id="b6" onclick="POSTORDERTRAVERSAL()">
+					PostOrder Traversal
+				</button>
+				<button id="b7" onclick="Clear()">
+					Clear
+				</button>
+				<button id="b8" onclick="Random()">
+					Random
+				</button>
+				<input type="checkbox" id="trace" onclick="OnTrace()">
+				<label for="flying"><b><i><font size="4" color="#FF0000">Trace</font></i></b></label>
+				<form onsubmit="return false" oninput="level.value = flevel.valueAsNumber">
+					<label for="flying"><b><i><font size="4" color="#FF0000">Speed</font></i></b></label>
+					<input name="flevel" id="flying" type="range" min="0" max="100" value="50">
+					<output style="color:red" for="flying" name="level"/output>
+						50
+				</form>
+			</div>
+
+			<canvas id="myCanvas" width="1300" height="380"></canvas>
+		</center>
+		<script>
+			var t = new BST();
+			var Trace = false;
+			var textarea = document.getElementById("Textarea1");
+			function OnTrace() {
+				Trace = !Trace;
+			};
+			function BG() {
+				var val = document.getElementById("bg");
+				val = Number(val.value);
+				for (var i = 0; i < 16; i++) {
+					if (val == i)
+						document.getElementById('Body').className = "bg" + i
+				}
+			};
+			function font_size() {
+				DisAble(true);
+				White();
+				textarea.value = "Font Size = ";
+				var s = document.getElementById("f");
+				s = Number(s.value);
+				DisAble(false);
+				font_control(s);
+				t.Print(null);
+			};
+
+			function font_color() {
+				DisAble(true);
+				White();
+				textarea.value = "Font Color = ";
+				var s = document.getElementById("c");
+				s = s.value;
+				DisAble(false);
+				font_color_control(s);
+				t.Print(null);
+			};
+			function color_ch() {
+				DisAble(true);
+				White();
+				textarea.value = "Circle Color = ";
+				var s = document.getElementById("c");
+				s = s.value;
+				DisAble(false);
+				color_control(s);
+				t.Print(null);
+			};
+			function GetInput() {
+				DisAble(true);
+				textarea.value = "";
+				var val = document.getElementById("value");
+				val = Number(val.value);
+				var found = t.Last_Node_Number(val);
+				if (found == null) {
+					t.add(val);
+					if (!Trace) {
+						SearchMap = [];
+					};
+					DisplayFound(0, val);
+					DisAble(false);
+				} else if (found > 63) {//127
+					textarea.value = "Levels are exceeded";
+					DisAble(false);
+				} else if (val > 99999 || val < -9999) {
+					textarea.value = "Number digits is too long";
+					DisAble(false);
+				} else {
+					textarea.value = "Add number " + val;
+					t.add(val);
+				}
+			};
+			function search() {
+				DisAble(true);
+				textarea.value = "";
+				var s = document.getElementById("value");
+				s = Number(s.value);
+				var x = t.search(s);
+				if (!Trace) {
+					SearchMap = [];
+				};
+				DisplaySearch(0, x)
+			};
+			function Delete() {
+				DisAble(true);
+				textarea.value = "";
+				var s = document.getElementById("value");
+				s = Number(s.value);
+				var x = t.search(s);
+				if (!Trace) {
+					SearchMap = [];
+				};
+				DisplayDelete(0);
+				if (x != null) {
+					textarea.value = s + " was Deleted";
+				} else {
+					textarea.value = s + " Not Found";
+				}
+				t.delete_node(s);
+			};
+			function PREORDERTRAVERSAL() {
+				DisAble(true);
+				textarea.value = "PREORDERTRAVERSAL is : ";
+				t.PREORDERTRAVERSAL();
+				if (!Trace) {
+					for (var i = 0; i < SearchMap.length; i++) {
+						textarea.value += SearchMap[i][1] + " ";
+					}
+					SearchMap = [];
+				};
+				DisplayTraversal(0);
+			};
+			function INORDERTRAVERSAL() {
+				DisAble(true);
+				textarea.value = "INORDERTRAVERSAL is : ";
+				t.INORDERTRAVERSAL();
+				if (!Trace) {
+					for (var i = 0; i < SearchMap.length; i++) {
+						textarea.value += SearchMap[i][1] + " ";
+					}
+					SearchMap = [];
+				};
+				DisplayTraversal(0);
+			};
+			function POSTORDERTRAVERSAL() {
+				DisAble(true);
+				textarea.value = "POSTORDERTRAVERSAL is : ";
+				t.POSTORDERTRAVERSAL();
+				if (!Trace) {
+					for (var i = 0; i < SearchMap.length; i++) {
+						textarea.value += SearchMap[i][1] + " ";
+					}
+					SearchMap = [];
+				};
+				DisplayTraversal(0);
+			};
+			function Clear() {
+				DisAble(true);
+				White();
+				textarea.value = "Cleared ";
+				t.clear();
+				DisAble(false);
+			};
+			function White() {
+				var c = document.getElementById("myCanvas");
+				var ctx = c.getContext("2d");
+				ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+			};
+			function Random() {
+				//   White();
+				DisAble(true);
+				var val = Math.random() * 1000;
+				val = parseInt(val);
+				var d = Math.random();
+				if (d <= 0.2)
+					val *= -1;
+				document.getElementById("value").value = val;
+				GetInput();
+			};
+			function Anim(TheValue, x, y) {
+				// clear
+				White();
+				//Draw
+				t.Print(TheValue);
+				circle(x, y, TheValue);
+
+				if (NewValueDir == 1) {
+					line_toRight(arr_X[(NewValueNumber - 1) / 2], arr_Y[(NewValueNumber - 1) / 2], x, y);
+				} else if (NewValueDir == 2) {
+					line_toLeft(arr_X[NewValueNumber / 2], arr_Y[NewValueNumber / 2], x, y);
+				}
+
+				// update
+				if (x <= arr_X[NewValueNumber])
+					x += document.getElementById("flying").value / 10;
+				if (y <= arr_Y[NewValueNumber])
+					y += document.getElementById("flying").value / 10;
+				// Animate
+				var timer = setTimeout('Anim(' + TheValue + ',' + x + ',' + y + ')', 100 - document.getElementById("flying").value);
+				if (x >= arr_X[NewValueNumber] && y >= arr_Y[NewValueNumber]) {
+					// clear
+					White();
+					//Draw
+					clearTimeout(timer);
+
+					t.Print(null);
+					DisAble(false);
+				}
+			};
+			function DisAble(bool) {
+				document.getElementById("bg1").disabled = bool;
+				document.getElementById("f1").disabled = bool;
+				document.getElementById("f2").disabled = bool;
+				document.getElementById("color1").disabled = bool;
+				document.getElementById("b1").disabled = bool;
+				document.getElementById("b2").disabled = bool;
+				document.getElementById("b3").disabled = bool;
+				document.getElementById("b4").disabled = bool;
+				document.getElementById("b5").disabled = bool;
+				document.getElementById("b6").disabled = bool;
+				document.getElementById("b7").disabled = bool;
+				document.getElementById("b8").disabled = bool;
+			};
+			//-----------------------------------------------------------------------------------------------
+			function DisplaySearch(index, x) {//trace search function
+				if (SearchMap.length != 0) {
+					if (index == 0) {
+						Search_Animation = SearchMap[0][0];
+						Node_coordeinat(SearchMap[0][0], Root_height + 1, 0, SearchMap[0][1], null);
+					} else {
+						Search_Animation = SearchMap[index][0];
+						Node_coordeinat(SearchMap[index][0], Root_height + 1, 0, SearchMap[index][1], null);
+						Node_coordeinat(SearchMap[index - 1][0], Root_height + 1, 0, SearchMap[index - 1][1], null);
+					}
+					index += 1
+					var timer = setTimeout('DisplaySearch(' + index + ',' + x + ')', 500);
+				}
+				if (index == SearchMap.length) {
+					var s = document.getElementById("value");
+					s = Number(s.value);
+					clearTimeout(timer);
+					if (x != null) {
+						textarea.value = s + " was Found";
+					} else {
+						textarea.value = s + " was Not Found";
+					}
+					Search_Animation = 0;
+					setTimeout('t.Print(' + null + ')', 1000);
+					SearchMap = [];
+					DisAble(false);
+				}
+			};
+
+			function DisplayTraversal(index) {
+				if (SearchMap.length != 0) {
+					if (index == 0) {
+						Search_Animation = SearchMap[0][0];
+						Node_coordeinat(SearchMap[0][0], Root_height + 1, 0, SearchMap[0][1], null);
+					} else {
+						Search_Animation = SearchMap[index][0];
+						Node_coordeinat(SearchMap[index][0], Root_height + 1, 0, SearchMap[index][1], null);
+						Node_coordeinat(SearchMap[index - 1][0], Root_height + 1, 0, SearchMap[index - 1][1], null);
+					}
+					textarea.value += SearchMap[index][1] + " ";
+					index += 1;
+					var timer = setTimeout('DisplayTraversal(' + index + ')', 500);
+				}
+				if (index == SearchMap.length) {
+					clearTimeout(timer);
+					Search_Animation = 0;
+					setTimeout('t.Print(' + null + ')', 1000);
+					SearchMap = [];
+					DisAble(false);
+				}
+			};
+
+			function DisplayInsert(index, value) {
+				if (SearchMap.length != 0) {
+					if (index == 0) {
+						Search_Animation = SearchMap[0][0];
+						Node_coordeinat(SearchMap[0][0], Root_height + 1, 0, SearchMap[0][1], null);
+					} else {
+						Search_Animation = SearchMap[index][0];
+						Node_coordeinat(SearchMap[index][0], Root_height + 1, 0, SearchMap[index][1], null);
+						Node_coordeinat(SearchMap[index - 1][0], Root_height + 1, 0, SearchMap[index - 1][1], null);
+					}
+					index += 1;
+					var timer = setTimeout('DisplayInsert(' + index + ',' + value + ')', 500);
+				}
+
+				if (index == SearchMap.length) {
+					clearTimeout(timer);
+					Search_Animation = 0;
+					setTimeout('Anim(' + value + ',' + 30 + ',' + 30 + ')', 1000);
+					SearchMap = [];
+				}
+			};
+
+			function DisplayDelete(index) {
+				if (SearchMap.length != 0) {
+					if (index == 0) {
+						Search_Animation = SearchMap[0][0];
+						Node_coordeinat(SearchMap[0][0], Root_height + 1, 0, SearchMap[0][1], null);
+					} else {
+						Search_Animation = SearchMap[index][0];
+						Node_coordeinat(SearchMap[index][0], Root_height + 1, 0, SearchMap[index][1], null);
+						Node_coordeinat(SearchMap[index - 1][0], Root_height + 1, 0, SearchMap[index - 1][1], null);
+					}
+					index += 1;
+					var timer = setTimeout('DisplayDelete(' + index + ')', 500);
+				}
+				if (index == SearchMap.length) {
+					clearTimeout(timer);
+					Search_Animation = 0;
+					setTimeout('White()', 1000);
+					setTimeout('t.Print(' + null + ')', 1000);
+					SearchMap = [];
+					DisAble(false);
+				}
+			};
+
+			function DisplayFound(index, value) {
+				if (SearchMap.length != 0) {
+					if (index == 0) {
+						Search_Animation = SearchMap[0][0];
+						Node_coordeinat(SearchMap[0][0], Root_height + 1, 0, SearchMap[0][1], null);
+					} else {
+						Search_Animation = SearchMap[index][0];
+						Node_coordeinat(SearchMap[index][0], Root_height + 1, 0, SearchMap[index][1], null);
+						Node_coordeinat(SearchMap[index - 1][0], Root_height + 1, 0, SearchMap[index - 1][1], null);
+					}
+					index += 1;
+					var timer = setTimeout('DisplayFound(' + index + ',' + value + ')', 500);
+				}
+
+				if (index == SearchMap.length) {
+					clearTimeout(timer);
+					textarea.value = value + " is exist before.";
+					Search_Animation = 0;
+					setTimeout('t.Print(' + null + ')', 500);
+					SearchMap = [];
+				}
+			};
+		</script>
+	</body>
+</html>

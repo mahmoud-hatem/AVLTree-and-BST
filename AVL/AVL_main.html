@@ -1,0 +1,325 @@
+<html>
+	<head>
+		<title>FCIS Avl Tree</title>
+		<script src="origin co-ordenates.js"></script>
+		<script src="Avl_controller.js"></script>
+		<script src="Animation.js"></script>
+		<style>
+			#myCanvas {
+				border: 1px solid rgb(0,0,0);
+			}
+			h1 {
+				color: red
+			}
+			.bg0 {
+				background-image: url("Background/White.jpg");
+			}
+			.bg1 {
+				background-image: url("Background/Abstract.jpg");
+			}
+			.bg2 {
+				background-image: url("Background/Black baroque pattern.jpg");
+			}
+			.bg3 {
+				background-image: url("Background/Black.jpg");
+			}
+			.bg4 {
+				background-image: url("Background/Dark fabric.jpg");
+			}
+			.bg5 {
+				background-image: url("Background/Desert.jpg");
+			}
+			.bg6 {
+				background-image: url("Background/Finding Nemo.jpg");
+			}
+			.bg7 {
+				background-image: url("Background/Gray floor texture.jpg");
+			}
+			.bg8 {
+				background-image: url("Background/Light purple.jpg");
+			}
+			.bg9 {
+				background-image: url("Background/Moonrise.jpg");
+			}
+			.bg10 {
+				background-image: url("Background/Parallel lines.jpg");
+			}
+			.bg11 {
+				background-image: url("Background/Scarlet texture.jpg");
+			}
+			.bg12 {
+				background-image: url("Background/Sea.jpg");
+			}
+			.bg13 {
+				background-image: url("Background/Sunflowers.jpg");
+			}
+			.bg14 {
+				background-image: url("Background/Superman Man Of Steel.jpg");
+			}
+			.bg15 {
+				background-image: url("Background/Tau.jpg");
+			}
+		</style>
+		<body id="Body">
+	</head>
+	<body background="Background/Sunflowers.jpg">
+		<center>
+			<h1>AVL Tree</h1>
+			<b><i><font size="4" color="#FF0000">Output</font></i></b>
+			<textarea id = "Textarea1" disabled="disabled"rows="1" cols="120"></textarea>
+			<audio controls autoplay loop>
+				<source src="Inception.ogg" type="audio/ogg">
+				<source src="Inception.mp3" type="audio/mp3">
+				Your browser does not support the audio element.
+			</audio>
+			<div>
+				<b><i><font size="4" color="#FF0000">Theme</font></i></b>
+				<select id="bg" name="Background">
+					<option value="0">White</option>
+					<option value="1">Abstract</option>
+					<option value="2">Black baroque pattern</option>
+					<option value="3">Black</option>
+					<option value="4">Dark fabric</option>
+					<option value="5">Desert</option>
+					<option value="6">Finding Nemo</option>
+					<option value="7">Gray floor texture</option>
+					<option value="8">Light purple</option>
+					<option value="9">Moonrise</option>
+					<option value="10">Parallel lines</option>
+					<option value="11">Scarlet texture</option>
+					<option value="12">Sea</option>
+					<option value="13">Sunflowers</option>
+					<option value="14">Superman Man Of Steel</option>
+					<option value="15">Tau</option>
+				</select>
+				<button id="bg1" onclick="BG()">
+					Background
+				</button>
+				<select id="f" name="Background">
+					<option value="0">25 px Arial</option>
+					<option value="1">30 px Arial</option>
+					<option value="2">35 px Arial</option>
+				</select>
+				<button id="f1" onclick="font_size()">
+					Font size
+				</button>
+				<input id="c" type="color" name="Font color">
+				<button id="f2" onclick="font_color()">
+					Font color
+				</button>
+				<button id="color1" onclick="color_ch()">
+					Circle color
+				</button>
+				<br>
+				<label><b><i><font size="4" color="#FF0000">Value</font></i></b></label>
+				<input name="Value" id="value" type="number" min="-9999" max="99999">
+				<button id="b1" onclick="GetInput()">
+					Insert
+				</button>
+				<button id="b2" onclick="search()">
+					Search
+				</button>
+				<button id="b3" onclick="Delete()">
+					Delete
+				</button>
+				<button id="b4" onclick="PREORDERTRAVERSAL()">
+					PreOrder Traversal
+				</button>
+				<button id="b5" onclick="INORDERTRAVERSAL()">
+					InOrder Traversal
+				</button>
+				<button id="b6" onclick="POSTORDERTRAVERSAL()">
+					PostOrder Traversal
+				</button>
+				<button id="b7" onclick="Clear()">
+					Clear
+				</button>
+				<button id="b8" onclick="Random()">
+					Random
+				</button>
+				<input type="checkbox" id="trace" onclick="OnTrace()"> <label for="flying"><b><i><font size="4" color="#FF0000">Trace</font></i></b></label>
+				<form onsubmit="return false" oninput="level.value = flevel.valueAsNumber">
+					<label for="flying"><b><i><font size="4" color="#FF0000">Speed</font></i></b></label>
+					<input name="flevel" id="flying" type="range" min="0" max="100" value="50">
+					<output style="color:red" for="flying" name="level"/output>50
+				</form>
+			</div>
+			<canvas id="myCanvas" width="1300" height="380"></canvas>
+		</center>
+		<script>
+			var check = false;//used in animation
+			var t = new AVLTree();//object AVL Tree
+			var Trace = false;//trace option
+			var textarea = document.getElementById("Textarea1");//output box
+			function OnTrace() {//trace function
+       			Trace = !Trace;
+   			};
+			function BG() {//change Background function
+				var val = document.getElementById("bg");
+				val = Number(val.value);
+				for(var i=0 ; i<16 ; i++){
+				if (val == i)
+					document.getElementById('Body').className = "bg"+i
+				}
+			};
+			function font_size() {//change font size function
+				DisAble(true);
+				White();
+				textarea.value = "Font Size = ";
+				var s = document.getElementById("f");
+				s = Number(s.value);
+				DisAble(false);
+				font_control(s);
+				t.Print(null);
+			};
+
+			function font_color() {//change font color
+				DisAble(true);
+				White();
+				textarea.value = "Font Color = ";
+				var s = document.getElementById("c");
+				s = s.value;
+				DisAble(false);
+				font_color_control(s);
+				t.Print(null);
+			};
+			function color_ch() {//change Circle Color
+				DisAble(true);
+				White();
+				textarea.value = "Circle Color = ";
+				var s = document.getElementById("c");
+				s = s.value;
+				DisAble(false);
+				color_control(s);
+				t.Print(null);
+			};
+			function GetInput() {//get number from user to insert it
+				DisAble(true);
+				textarea.value = "";
+				var val = document.getElementById("value");
+				val = Number(val.value);
+				var found = t.Last_Node_Number(val);
+				if (found == null) {
+					t.add(val);
+					if (!Trace) {
+        				SearchMap = [];
+   					 };
+					DisplayFound(0, val);
+					DisAble(false);
+				} else if (found > 63) {
+					textarea.value = "Levels are exceeded";
+					DisAble(false);
+				}else if(val>99999 || val <-9999){
+					textarea.value = "Number digits is too long";	
+					DisAble(false);
+				}else {
+					textarea.value = "Add number " + val;
+					t.add(val);
+				}
+			};
+			function search() {//to search for a node in the tree
+				DisAble(true);
+				textarea.value = "";
+				var s = document.getElementById("value");
+				s = Number(s.value);
+				var x = t.search(s);
+				if (!Trace) {
+       				 SearchMap = [];
+   				 };
+				DisplaySearch(0, x);
+
+			};
+			function Delete() {//to delete a node in the tree
+				DisAble(true);
+				textarea.value = "";
+				var s = document.getElementById("value");
+				s = Number(s.value);
+				var x = t.search(s);
+				if (!Trace) {
+       				 SearchMap = [];
+   				 };
+				DisplayDelete(0);
+				if (x != null) {
+					textarea.value = s + " was Deleted";
+				} else {
+					textarea.value = s + " Not Found";
+				}
+				t.delete_node(s);
+			};
+			function PREORDERTRAVERSAL() {// to print a PREORDERTRAVERSAL
+				DisAble(true);
+				textarea.value = "PREORDERTRAVERSAL is : ";
+				t.PREORDERTRAVERSAL();
+				if (!Trace) {
+     			   for (var i = 0; i < SearchMap.length; i++) {
+            			textarea.value += SearchMap[i][1] + " ";
+        			}
+       			 SearchMap = [];
+    			};
+				DisplayTraversal(0);
+			};
+			function INORDERTRAVERSAL() {//to print INORDERTRAVERSAL
+				DisAble(true);
+				textarea.value = "INORDERTRAVERSAL is : ";
+				t.INORDERTRAVERSAL();
+				if (!Trace) {
+     			   for (var i = 0; i < SearchMap.length; i++) {
+            			textarea.value += SearchMap[i][1] + " ";
+        			}
+       			 SearchMap = [];
+    			};
+				DisplayTraversal(0);
+			};
+			function POSTORDERTRAVERSAL() {//to print POSTORDERTRAVERSAL
+				DisAble(true);
+				textarea.value = "POSTORDERTRAVERSAL is : ";
+				t.POSTORDERTRAVERSAL();
+				if (!Trace) {
+     			   for (var i = 0; i < SearchMap.length; i++) {
+            			textarea.value += SearchMap[i][1] + " ";
+        			}
+       			 SearchMap = [];
+    			};
+				DisplayTraversal(0);
+			};
+			function Clear() {//to Delete all the tree
+				DisAble(true);
+				White();
+				textarea.value = "Cleared ";
+				t.clear();
+				DisAble(false);
+			};
+			function White() {//this function to clear the canvas
+				var c = document.getElementById("myCanvas");
+				var ctx = c.getContext("2d");
+				ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+			};
+			function Random() {//this to generate a random number to insert
+				DisAble(true);
+				var val = Math.random() * 1000;//form 0 to 1000
+				val = parseInt(val);//casting number to int
+				var d = Math.random();
+				if (d <= 0.2)
+					val *= -1;//form -1000 to 0
+				document.getElementById("value").value=val;
+				GetInput();//go to insert the randome number
+			};
+			function DisAble(bool) {//this to turn on/off all button
+				document.getElementById("bg1").disabled = bool;
+				document.getElementById("f1").disabled = bool;
+				document.getElementById("f2").disabled = bool;
+				document.getElementById("color1").disabled = bool;
+				document.getElementById("b1").disabled = bool;
+				document.getElementById("b2").disabled = bool;
+				document.getElementById("b3").disabled = bool;
+				document.getElementById("b4").disabled = bool;
+				document.getElementById("b5").disabled = bool;
+				document.getElementById("b6").disabled = bool;
+				document.getElementById("b7").disabled = bool;
+				document.getElementById("b8").disabled = bool;
+			};
+			
+		</script>
+
+	</body>
+</html>
